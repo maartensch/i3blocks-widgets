@@ -1,0 +1,4 @@
+#! /bin/bash
+date_bday=`date "+%e %b"`
+date_blocklet=`date "+%a %R"`
+echo "${date_bday}, ${date_blocklet^}"

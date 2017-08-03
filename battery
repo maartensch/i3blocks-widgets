@@ -1,0 +1,23 @@
+#! /bin/bash
+blockb=$(acpi -b)
+blockbinfo=""
+batterybefore=""
+
+blockbint=$(echo $blockb | tr ',' "\n" | tr '%' '\n' | head -n2 | tail -n1 | xargs)
+
+if [[ $blockb == *"Charging"* ]]; then
+  batterybefore="<span color=\"#1ed31e\">"
+elif [[ $blockbint -lt 25 ]]; then
+  batterybefore="<span color=\"red\">"
+fi
+
+# Add icon and span element
+blockbinfo="$batterybefore $blockbint%"
+
+if [[ $blockb == *"Charging"* ]]; then
+  blockbinfo="$blockbinfo</span>"
+elif [[ $blockbint -lt 25 ]]; then
+  blockbinfo="$blockbinfo (please charge)</span>"
+fi
+
+echo $blockbinfo
