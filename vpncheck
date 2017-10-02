@@ -4,5 +4,5 @@ v=`ip route show | head -n1`
 if [[ $v == *"tun0"* ]]; then
   echo "<span font_weight=\"bold\" color=\"#1ed31e\"> Up</span>"
 else
-  echo "<span font_weight=\"bold\" color=\"red\"> Down!</span>"
+  echo "<span font_weight=\"bold\" color=\"darkcyan\"> Down!</span>"
 fi

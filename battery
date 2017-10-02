@@ -6,7 +6,7 @@ batterybefore=""
 blockbint=$(echo $blockb | tr ',' "\n" | tr '%' '\n' | head -n2 | tail -n1 | xargs)
 
 if [[ $blockb == *"Charging"* ]]; then
-  batterybefore="<span color=\"#1ed31e\">"
+  batterybefore="<span color=\"violet\">"
 elif [[ $blockbint -lt 25 ]]; then
   batterybefore="<span color=\"red\">"
 fi

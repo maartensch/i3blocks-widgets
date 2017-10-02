@@ -14,11 +14,6 @@ set $mod Mod4
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font pango:System San Francisco Display 11
-#font pango:SF Compact Text Bold 12
-
-# This font is widely installed, provides lots of unicode glyphs, right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -132,7 +127,6 @@ assign [class="Gnome-terminal"] $w3
 assign [class="Spotify"] $w6
 assign [class="Thunar"] $w2
 assign [class="Telegram"] $w7
-assign [class="jetbrains-idea"] $w4
 
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -182,7 +176,7 @@ client.urgent $urgent-bg-color $urgent-bg-color $text-color #00ff00
 
 
 
-bindsym $mod+shift+x exec /home/sword/Documents/lockscreen/lock.sh
+bindsym $mod+shift+x exec bash /home/sword/lock.sh
 
 # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
@@ -203,53 +197,34 @@ bindsym XF86AudioPrev exec playerctl previous
 
 # Exec all programs for workspaces
 exec firefox
-exec spotify
 exec thunar
 exec --no-startup-id nm-applet
 exec --no-startup-id volumeicon
-exec /home/sword/Telegram/Telegram
 exec fluxgui
 
 # Set wallpaper
-exec feh --bg-scale /home/sword/Pictures/wallpaper.jpg
+exec feh --bg-scale feh --bg-scale /home/sword/Pictures/Wallpapers/current/wall.png
 for_window [class="Spotify"] move window to workspace $w6
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-#bar {
-#    position top
-#    status_command i3blocks #i3status
-#    tray_output primary
-#
-#colors {
-#        background #F5D9DA
-#        #statusline #00A5FF #that neon blue
-#        statusline #271521
-#        separator #F5D9DA
-#
-#        focused_workspace  #F5D9DA #F5D9DA #000000
-#        active_workspace   #333333 #5f676a #000000
-#        inactive_workspace #F5D9DA #F5D9DA #999999
-#        urgent_workspace   #2f343a #900000 #ffffff
-#    }
-#
-#}
-
 bar {
-    position top
+    position bottom
     status_command i3blocks #i3status
     tray_output primary
 
 colors {
         background #000000
-        #statusline #00A5FF #that neon blue
         statusline #ffffff
         separator #000000
 
-        focused_workspace  #000000 #000000 #ffffff
+        focused_workspace  #000000 #132336 #ffffff
         active_workspace   #333333 #5f676a #ffffff
         inactive_workspace #000000 #000000 #999999
         urgent_workspace   #2f343a #900000 #ffffff
     }
 
 }
+
+# gaps
+for_window [class="^.*"] border pixel 0
+gaps inner 24
+gaps outer 0
