@@ -1,14 +1,14 @@
 #!/usr/bin/python
-from subprocess import check_output
-from subprocess import CalledProcessError
+__author__ = 'sword'
+
+from subprocess import CalledProcessError,check_output
 try:
-    r = check_output(['lsof','-i','-P'])
+    r = check_output(['lsof','-i','-P','-n'])
     lines = r.splitlines()
     apps = []
     for i in range(0,len(lines)):
         if(i != 0):
             app = lines[i].split(' ')[0].title()
-            app = app[:4]
             if app not in apps:
                 apps.append(app)
 
