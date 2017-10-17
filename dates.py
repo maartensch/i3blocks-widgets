@@ -12,7 +12,7 @@ dates = []
 now = datetime.datetime.now()
 nowweek = now.isocalendar()[1]
 nowyear = now.year
-for key in data.iterkeys():
+for key,item in data.items():
     d = data[key]
     date = datetime.datetime.strptime(d,'%Y-%m-%d')
     week = date.isocalendar()[1]
@@ -22,4 +22,4 @@ for key in data.iterkeys():
 
 if len(dates) != 0:
     dates.sort()
-    print "<span weight=\"bold\" color=\"#ff6600\">%s</span>" % ",".join(map(str,dates))
+    print("<span weight=\"bold\">%s</span>" % ",".join(map(str,dates)))
