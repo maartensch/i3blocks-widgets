@@ -8,9 +8,16 @@ start: Start stopwatch, each time the script is executed substract 1 second
 stop: Stop stopwatch, reset time to default (5400 seconds)
 """
 
+import os
 import sys
 import sqlite3
-from os.path import abspath,dirname
+from os.path import abspath,dirname,isfile
+
+db = None
+default_time_seconds = 5400
+cdir = abspath(dirname(__file__))
+runfile = "%s/data/stopwatch.running" % cdir
+database = "%s/data/stopwatch.sqlite" % cdir
 
 # Shorthand functions
 def select(sql,params=()):
@@ -23,13 +30,25 @@ def insert(sql,params=()):
     cursor.execute(sql,params)
     db.commit()
 
+if len(sys.argv) == 2:
+    db = sqlite3.connect(database)
+    cursor = db.cursor()
+    cmd = sys.argv[1]
+    if cmd == "start":
+        insert("UPDATE game_state set game_time_seconds = ?",(default_time_seconds,))
+        with open(runfile,'w+') as f:
+            f.write("")
+        print("started")
+    if cmd == "stop":
+        os.remove(runfile)
+        print("stopped")
+    exit(0)
+
 # Setup + connect to database
 create_script="""
 CREATE TABLE IF NOT EXISTS game_settings (game_time_seconds INTEGER);
-CREATE TABLE IF NOT EXISTS game_state (state VARCHAR255,game_time_seconds INTEGER);
+CREATE TABLE IF NOT EXISTS game_state (game_time_seconds INTEGER);
 """
-cdir = abspath(dirname(__file__))
-database = "%s/data/stopwatch.sqlite" % cdir
 db = sqlite3.connect(database)
 cursor = db.cursor()
 for line in create_script.strip().split("\n"):
@@ -37,11 +56,11 @@ for line in create_script.strip().split("\n"):
 
 ## Setup > default settings
 if len(select("SELECT * FROM game_settings")) == 0:
-    insert("INSERT INTO game_settings(game_time_seconds) VALUES(?)",(5400,)) # default 90 minutes time
+    insert("INSERT INTO game_settings(game_time_seconds) VALUES(?)",(default_time_seconds,)) # default 90 minutes time
 
 ## Setup > default state
 if len(select("SELECT * FROM game_state")) == 0:
-    insert("INSERT INTO game_state(state,game_time_seconds) VALUES(?,?)",('stopped',5400)) # default 90 minutes time
+    insert("INSERT INTO game_state(game_time_seconds) VALUES(?)",(default_time_seconds,)) # default 90 minutes time
 
 
 # Load data
@@ -51,28 +70,22 @@ for row in rows:
 
 rows = select("SELECT * FROM game_state")
 for row in rows:
-    state = row[0]
-    seconds_left = int(row[1])
+    seconds_left = int(row[0])
 
 # Print for testing
 #print("settings_seconds: %d" % gametime)
 #print("state: %s" % state)
 #print("seconds_left: %d" % seconds_left)
 
-if state == "running" and seconds_left != 0:
+if isfile(runfile) and seconds_left != 0:
     m, s = divmod(seconds_left, 60)
     h, m = divmod(m, 60)
     print "%d:%02d:%02d" % (h, m, s)
     seconds_left -= 1
     insert("UPDATE game_state set game_time_seconds = ?",(seconds_left,))
 
-if len(sys.argv) == 2:
-    cmd = sys.argv[1]
-    if cmd == "start":
-        insert("UPDATE game_state set state = ?",("running",))
-    if cmd == "stop":
-        insert("UPDATE game_state set state=?, game_time_seconds = ?",("stopped",gametime))
 
 # Disconnect database
-cursor.close()
-db.close()
+if db is not None:
+    cursor.close()
+    db.close()
