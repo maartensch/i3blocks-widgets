@@ -8,8 +8,6 @@ start: Start stopwatch, each time the script is executed substract 1 second
 stop: Stop stopwatch, reset time to default (5400 seconds)
 """
 
-import argparse
-import re
 import sys
 import sqlite3
 from os.path import abspath,dirname
