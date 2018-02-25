@@ -15,6 +15,7 @@ alias ll='ls -ahl'
 alias snmr='sudo service network-manager restart'
 alias venv3='virtualenv -p python3 .env'
 alias a="atom && exit"
+alias oo="python ~/i3blocks-widgets/widgets/opacity-window.py & exit"
 
 # Custom programs
 export PATH=$PATH:/home/sword/git/mounty
