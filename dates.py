@@ -8,6 +8,8 @@ with open(dataPath + '/dates.json','r') as f:
     text = f.read()
     data = json.loads(text)
 
+
+weeks_until = 1
 dates = []
 now = datetime.datetime.now()
 nowweek = now.isocalendar()[1]
@@ -17,7 +19,7 @@ for key in data.iterkeys():
     date = datetime.datetime.strptime(key,'%Y-%m-%d')
     week = date.isocalendar()[1]
     diff = nowweek - week
-    if date.year == nowyear and diff < 3 and diff > -3:
+    if date.year == nowyear and diff < weeks_until and diff > -weeks_until:
         dates.append(date.day)
 
 if len(dates) != 0:

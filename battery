@@ -17,7 +17,7 @@ blockbinfo="$batterybefore $blockbint%"
 if [[ $blockb == *"Charging"* ]]; then
   blockbinfo="$blockbinfo</span>"
 elif [[ $blockbint -lt 25 ]]; then
-  blockbinfo="$blockbinfo (please charge)</span>"
+  blockbinfo="$blockbinfo (CHARGE ME BRO!)</span>"
 fi
 
 echo $blockbinfo
